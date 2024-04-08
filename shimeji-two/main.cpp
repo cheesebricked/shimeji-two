@@ -5,6 +5,8 @@
 #include "settings.h"
 #include "shimeji.h"
 
+// REQUIRES: SFML, WinAPI
+
 
 Shimeji shimeji;
 
@@ -14,6 +16,8 @@ bool grabbedWindow = false;
 int main()
 {
     initWindow();
+
+    window.setFramerateLimit(60);
 
     // run the program as long as the window is open
     while (window.isOpen())
@@ -35,26 +39,32 @@ int main()
                         grabbedWindow = true;
                     }
                     break;
+
             case sf::Event::MouseButtonReleased:
                 
                 if (event.mouseButton.button == sf::Mouse::Left)
                 {
                     grabbedWindow = false;
+                    shimeji.grabbed = false;
                 }
                 break;
                 
             case sf::Event::MouseMoved:
                 if (grabbedWindow)
                 {
-                    window.setPosition(sf::Mouse::getPosition() + grabbedOffset);
+                    sf::Vector2i posSet = sf::Mouse::getPosition() + grabbedOffset;
+                    window.setPosition(posSet);
+                    shimeji.setWindowPos(posSet);
+                    shimeji.grabbed = true;
                 }
                 break;
             }
         }
 
-        // rgb (0, 2, 0, alpha) is our bg color. its what windows will make transparent.
+        // rgb (0, 2, 0, alpha) is our bg color. its the color windows will make transparent.
         // change this value to see the window size
         window.clear(sf::Color::Color(0,0,0,255));
+        shimeji.update();
         shimeji.draw();
         window.display();
     }
