@@ -19,6 +19,8 @@ int main()
 
     window.setFramerateLimit(60);
 
+    srand(time(0)); // generate random seed based off time
+
     // run the program as long as the window is open
     while (window.isOpen())
     {
@@ -28,20 +30,20 @@ int main()
         {
             switch (event.type)
             {
-            case sf::Event::Closed:
+            case sf::Event::Closed: // on close
                     window.close();
                     break;
             
-            case sf::Event::MouseButtonPressed:
+            case sf::Event::MouseButtonPressed: // grab shimeji
                     if (event.mouseButton.button == sf::Mouse::Left)
                     {
                         grabbedOffset = window.getPosition() - sf::Mouse::getPosition();
                         grabbedWindow = true;
+                        shimeji.grabbed = true;
                     }
                     break;
 
-            case sf::Event::MouseButtonReleased:
-                
+            case sf::Event::MouseButtonReleased: // release shimeji
                 if (event.mouseButton.button == sf::Mouse::Left)
                 {
                     grabbedWindow = false;
@@ -49,7 +51,7 @@ int main()
                 }
                 break;
                 
-            case sf::Event::MouseMoved:
+            case sf::Event::MouseMoved: // move shimeji
                 if (grabbedWindow)
                 {
                     sf::Vector2i posSet = sf::Mouse::getPosition() + grabbedOffset;
@@ -61,11 +63,8 @@ int main()
             }
         }
 
-        // rgb (0, 2, 0, alpha) is our bg color. its the color windows will make transparent.
-        // change this value to see the window size
-        window.clear(sf::Color::Color(0,0,0,255));
+        window.clear(sf::Color::Color(0,2,0,255)); // set to (0, 2, 0, 255) to remove bg
         shimeji.update();
-        shimeji.draw();
         window.display();
     }
 }

@@ -10,13 +10,15 @@ sf::RenderWindow window(sf::VideoMode(WIDTH, HEIGHT), "My window", sf::Style::No
 
 HWND windowHandle;
 
+// initializes the window
 void initWindow()
 {
     windowHandle = FindWindowA(NULL, "My window");
 
     SetWindowLong(windowHandle, GWL_EXSTYLE, GetWindowLong(windowHandle, GWL_EXSTYLE) | WS_EX_LAYERED);
-    SetLayeredWindowAttributes(windowHandle, RGB(0, 2, 0), 0, LWA_COLORKEY);
+    SetLayeredWindowAttributes(windowHandle, RGB(0, 2, 0), 0, LWA_COLORKEY); // rgb color (0, 2, 0) will become transparent
 }
+
 
 UINT getTaskbarHeight() {
     APPBARDATA abd;
